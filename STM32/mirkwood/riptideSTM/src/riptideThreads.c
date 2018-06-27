@@ -99,7 +99,7 @@ void vBackplaneI2C(void *pvParameters) {
 
   float converterTemp= 0.0;
   //Variables for the satatus transfer message
-  uint8_t statmsg[] = "&&&&nnnnnnnnnn@@@@@\r\n";
+  uint8_t statmsg[] = "&&&&nnnnnnnnnn!@@@@\r\n";
   uint8_t * ptr;
   int i = 0;
 
