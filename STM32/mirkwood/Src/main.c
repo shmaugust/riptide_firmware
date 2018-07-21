@@ -320,7 +320,7 @@ static void MX_TIM2_Init(void)
   }
 
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
+  sConfigOC.Pulse = 1500;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
@@ -328,7 +328,7 @@ static void MX_TIM2_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  sConfigOC.Pulse = 1500;
+  //sConfigOC.Pulse = 1500;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -556,11 +556,12 @@ void writePWM(uint16_t * values) {
     // spare is TIM2 Channel 3 (on pin 16), need to add in cube mx if we want to add
     htim5.Instance->CCR4 = values[0];		// spl
     htim2.Instance->CCR2 = values[1];		// ssl
+    //htim2.Instance->CCR1 = values[1];   // spare
     htim2.Instance->CCR4 = values[2];		// swf
     htim2.Instance->CCR3 = values[3];		// swa
     htim3.Instance->CCR4 = values[4];		// hpa
-    htim14.Instance->CCR1 = values[5];	    // hsa
-    htim13.Instance->CCR1 = values[6];	    // hsf
+    htim14.Instance->CCR1 = values[5];	// hsa
+    htim13.Instance->CCR1 = values[6];	// hsf
     htim3.Instance->CCR3 = values[7];		// hpf
 }
 
@@ -573,6 +574,7 @@ void resetPWM() {
     htim14.Instance->CCR1 = 1500;
     htim13.Instance->CCR1 = 1500;
     htim3.Instance->CCR3 = 1500;
+    //htim2.Instance->CCR1 = 1500;
 }
 
 I2C_HandleTypeDef* getDepthI2CRef() {

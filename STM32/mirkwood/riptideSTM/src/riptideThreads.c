@@ -62,7 +62,7 @@ void vBackplaneI2C(void *pvParameters) {
   //setup array for the status board, in order we are setting:
   //  uint8_t setup[8]: decode mode, Red intensity, green intensity, yellow intensity,
   //                    scan limit, registry config, digit type, led test
-  uint8_t setup[] = {0xFF, 0x11, 0xAA, 0xCC, 0x05, 0x41, 0x00, 0x00};
+  uint8_t setup[] = {0b00111111, 0x11, 0xAA, 0xCC, 0x07, 0x41, 0x00, 0x00};
 	riptideSBsetup(setup);
 
 	/*************** BB setup *************/
@@ -155,6 +155,17 @@ void vBackplaneI2C(void *pvParameters) {
     printToDisplay(stbdI, 0x62);
     printToDisplay(portI, 0x60); //usually port
 		printToDisplay(temp, 0x64);
+
+    // kill switch
+    write_data[0] = 0x66;
+    if( HAL_GPIO_ReadPin(KillSwitch_GPIO_Port,KillSwitch_Pin) == GPIO_PIN_RESET){
+
+        write_data[1] = 0b00100000;
+
+    } else {
+      write_data[1] = 0b01000000;
+    }
+    HAL_I2C_Master_Transmit(i2c, SB_ADDR, write_data, 2, 20);
 
     ptr = &(statmsg[4]);
 

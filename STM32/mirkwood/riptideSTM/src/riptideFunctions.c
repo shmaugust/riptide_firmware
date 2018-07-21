@@ -280,7 +280,25 @@ void riptideSBsetup(uint8_t setup[8]){
   led_data[1] = setup[7];
   vTaskDelay(10);
   HAL_I2C_Master_Transmit(i2c_bp, SB_ADDR, led_data, 2, 20); // for testing only
+  led_data[0] = 0x13;
+  led_data[1] = 0xFF;
   vTaskDelay(10);
+  HAL_I2C_Master_Transmit(i2c_bp, SB_ADDR, led_data, 2, 20);
+  led_data[0] = 0x17;
+  led_data[1] = 0xFF;
+  vTaskDelay(10);
+  HAL_I2C_Master_Transmit(i2c_bp, SB_ADDR, led_data, 2, 20);
+
+  led_data[0] = 0x6E;
+  led_data[1] = 0b00000000;
+  vTaskDelay(10);
+  HAL_I2C_Master_Transmit(i2c_bp, SB_ADDR, led_data, 2, 20);
+  led_data[0] = 0x66;
+  led_data[1] = 0b00000000;
+  vTaskDelay(10);
+  HAL_I2C_Master_Transmit(i2c_bp, SB_ADDR, led_data, 2, 20);
+
+  vTaskDelay(1000);
 }
 // this function assumes the length is 4
 void printToDisplay(float value, uint8_t which) {
